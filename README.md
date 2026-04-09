@@ -1,7 +1,7 @@
 # HLA-I Multiomics Analysis in HCC
 
 ![header](doc/header.png)
-
+[![DOI](https://zenodo.org/badge/1200352013.svg)](https://doi.org/10.5281/zenodo.19482655)
 ## 📄 Associated Manuscript
 
 This repository contains the analysis code for the study:
