@@ -10,16 +10,6 @@ This repository contains the analysis code for the study:
 
 🟡 Currently under publication in *Heliyon*.
 
----
-
-## 🌐 Live Resource
-
-An interactive version of this analysis will be available here:
-
-👉 (Coming soon)
-
----
-
 ## 📁 Project Structure
 
 ```
@@ -55,6 +45,14 @@ https://xenabrowser.net/datapages/?dataset=TcgaTargetGtex_rsem_gene_tpm&host=htt
 ### scRNA-seq & spatial:
 http://lifeome.net:809/#/download
 
+### Processed data
+
+Some of the datasets used in this study, whose original references are cited in the manuscript, were further cleaned, matched with metadata, and subsetted for HLA-focused analyses. These processed files are available at the following link:
+
+https://drive.google.com/file/d/1xofyMsXwu7iNUZW-dApgG6b46AvYE42Y/view?usp=sharing
+
+After downloading and unzipping the archive, the extracted files should be placed in their corresponding folders within the `data/` directory of this repository.
+
 ---
 
 ## ▶️ How to Run
@@ -81,22 +79,78 @@ source("scripts/01_allele_frequency.R")
 
 ## 🧪 Neoantigen Analysis (netMHCpan)
 
-Run generated shell scripts:
+Neoantigen binding affinity prediction is performed using **netMHCpan**.  
+The pipeline automatically generates peptide files and corresponding shell scripts for each HLA locus (A, B, C).
 
-```bash
+### 🔹 Step 1: Prepare input files
+
+After running:
+
+```r
+source("scripts/03_neoantigen_affinity.R")
+```
+the following will be generated:
+
+Peptide files (*.pep.text)
+Shell scripts:
+Code-Linux-HLA-A.sh
+Code-Linux-HLA-B.sh
+Code-Linux-HLA-C.sh
+
+These are typically located in:
+
+results/neoantigen/linux_scripts/
+results/neoantigen/peptides/
+🔹 Step 2: Run netMHCpan (Linux required)
+
+Transfer the peptide files and shell scripts to a Linux environment where netMHCpan is installed.
+
+Run:
+
 bash Code-Linux-HLA-A.sh
 bash Code-Linux-HLA-B.sh
 bash Code-Linux-HLA-C.sh
-```
 
-Move outputs to:
-```
-results/neoantigen/A
-results/neoantigen/B
-results/neoantigen/C
-```
+Each script will:
 
----
+Loop over samples/alleles
+Run netMHCpan for each peptide set
+Generate raw binding affinity outputs
+🔹 Step 3: Collect output files
+
+After execution, you will obtain multiple output files (typically .txt or .xls depending on netMHCpan version).
+
+These files should be organized into the following directories:
+
+results/neoantigen/A/
+results/neoantigen/B/
+results/neoantigen/C/
+
+Each folder must contain outputs corresponding to that locus.
+
+🔹 Step 4: Downstream analysis in R
+
+Once outputs are placed correctly, re-run:
+
+source("scripts/03_neoantigen_affinity.R")
+
+This step will:
+
+Parse netMHCpan output files
+Extract binding affinity values
+Merge with HLA genotype and peptide data
+Perform statistical analysis:
+ANOVA
+Post-hoc tests
+
+Summary statistics
+⚠️ Important Notes
+netMHCpan is not included in this repository and must be installed separately.
+Ensure that:
+File names are not modified
+Outputs are placed in the correct directories
+The pipeline assumes consistent naming between peptide files and output files.
+
 
 ## 📚 Citation
 
