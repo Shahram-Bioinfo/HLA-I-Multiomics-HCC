@@ -132,6 +132,8 @@ source("scripts/03_neoantigen_affinity.R")
 
 Aliyari S. et al. *Heliyon* (in press)
 
+Zenodo archive:
+https://doi.org/10.5281/zenodo.19482655
 ---
 
 ## 🧑‍💻 Author
